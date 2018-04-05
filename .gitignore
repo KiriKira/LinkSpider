@@ -1,0 +1,7 @@
+
+*.iml
+*.xml
+*.pyc
+*.pyc
+link/__pycache__/items.cpython-35.pyc
+*.csv
