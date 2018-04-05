@@ -10,7 +10,7 @@ class LinkSpider(CrawlSpider):
     name = "link"
     allowed_domains = ["s.lenglianmajia.com", "goods.lenglianmajia.com"]
     start_urls = ["http://s.lenglianmajia.com/list-goodsLine-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-1-1-0-"
-                  + str(i) + ".html" for i in range(1, 100)]
+                  + str(i) + ".html" for i in range(1, 6)]
 
     rules = (Rule(LinkExtractor(
         allow=('http://s.lenglianmajia.com/list-goodsLine-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-1-1-0-\d+.html',),
@@ -52,10 +52,19 @@ class LinkSpider(CrawlSpider):
         block1 = soup.ul.find_all('span')
         item['pinlei'], item['mingchen'], item['leixing'], item['yaoqiu'], item['guige'], item['chechang'], item['chexing'], item['yunfei'], tail1, tail2 = \
             map(lambda i: i.string, block1)
+            # map(lambda i: i.string.encode('gbk'), block1)
 
         block2 = soup.find_all('ul')[1].find_all('span')
-        item['chufa'], item['mudi'], item['zhuangche'], item['daohuo'] = \
+        item['chufa'], item['mudi'], zhuangche, daohuo = \
             map(lambda i: i.string, block2)
+
+        zhuangche_splite = re.split(r'-|——', zhuangche)
+        item['zhuangche01'] = ''.join(zhuangche_splite[:3])
+        item['zhuangche02'] = ''.join(zhuangche_splite[3:])
+
+        daohuo_splite = re.split(r'-|——', daohuo)
+        item['daohuo01'] = ''.join(daohuo_splite[:3])
+        item['daohuo02'] = ''.join(daohuo_splite[3:])
 
         item['tag'] = re.match(r"http://goods.lenglianmajia.com/(?P<tag>.*?).shtml", response.url).group("tag")
 
