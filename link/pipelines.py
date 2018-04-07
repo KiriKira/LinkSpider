@@ -105,7 +105,6 @@ class CSVPipeline(object):
         self.exporter1.start_exporting()
         self.exporter2.start_exporting()
 
-
     def spider_closed(self, spider):
         self.exporter1.finish_exporting()
         self.file1.close()

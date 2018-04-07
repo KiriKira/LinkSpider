@@ -50,9 +50,23 @@ class LinkSpider(CrawlSpider):
         item = DetailItem()
 
         block1 = soup.ul.find_all('span')
-        item['pinlei'], item['mingchen'], item['leixing'], item['yaoqiu'], item['guige'], item['chechang'], item['chexing'], item['yunfei'], tail1, tail2 = \
+        item['pinlei'], item['mingchen'], item['leixing'], yaoqiu, item['guige'], item['chechang'], item['chexing'], item['yunfei'], tail1, tail2 = \
             map(lambda i: i.string, block1)
             # map(lambda i: i.string.encode('gbk'), block1)
+
+        #spilt yaoqiu to two items
+        try:
+            item['yaoqiu01'] = yaoqiu.split('~')[0]
+            item['yaoqiu02'] = yaoqiu.split('~')[1][:-1]
+        except IndexError as e:
+            item['yaoqiu01'] = yaoqiu
+            item['yaoqiu02'] = 0
+        except Exception as e:
+            item['yaoqiu01'] = yaoqiu
+            item['yaoqiu02'] = str(e)
+
+        #delete "yuan" and ","
+        item['yunfei'] = ''.join(item['yunfei'][:-1].split(","))
 
         block2 = soup.find_all('ul')[1].find_all('span')
         item['chufa'], item['mudi'], zhuangche, daohuo = \
