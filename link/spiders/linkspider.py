@@ -5,6 +5,7 @@ from scrapy.linkextractors import LinkExtractor
 from ..items import IndexItem, DetailItem
 from bs4 import BeautifulSoup as bs
 import re
+from ..spiders.addresssplit import address_split
 
 
 class LinkSpider(CrawlSpider):
@@ -70,8 +71,11 @@ class LinkSpider(CrawlSpider):
         item['yunfei'] = ''.join(item['yunfei'][:-1].split(","))
 
         block2 = soup.find_all('ul')[1].find_all('span')
-        item['chufa'], item['mudi'], zhuangche, daohuo = \
+        chufa, mudi, zhuangche, daohuo = \
             map(lambda i: i.string, block2)
+
+        item['chufa01'], item['chufa02'], item['chufa03'] = address_split(chufa)
+        item['mudi01'], item['mudi02'], item['mudi03'] = address_split(mudi)
 
         zhuangche_splite = re.split(r'-|——', zhuangche)
         item['zhuangche01'] = ''.join(zhuangche_splite[:3])
