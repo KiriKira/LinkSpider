@@ -1,11 +1,18 @@
-#-*- coding：utf-8 -*-
+# -*-  coding：utf-8 -*-
 
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from ..items import IndexItem, DetailItem
 from bs4 import BeautifulSoup as bs
-import re
+import re, json, os
 from ..spiders.addresssplit import address_split
+
+with open(os.path.dirname(__file__) + "/" + "shengdata.json", "r") as f:
+    shengdata = json.load(f)
+
+with open(os.path.dirname(__file__) + "/" + "shidata.json", "r") as f:
+    shidata = json.load(f)
+    print(shidata)
 
 
 class LinkSpider(CrawlSpider):
@@ -69,6 +76,7 @@ class LinkSpider(CrawlSpider):
             item['yaoqiu01'] = yaoqiu
             item['yaoqiu02'] = str(e)
 
+
 #       delete "yuan" and ","
         item['yunfei'] = ''.join(item['yunfei'][:-1].split(","))
 
@@ -78,6 +86,26 @@ class LinkSpider(CrawlSpider):
 
         item['chufa01'], item['chufa02'], item['chufa03'] = address_split(chufa)
         item['mudi01'], item['mudi02'], item['mudi03'] = address_split(mudi)
+
+        try:
+            item['chufa_shengnumber'] = shengdata[item['chufa01']]
+        except KeyError:
+            item['chufa_shengnumber'] = None
+
+        try:
+            item['chufa_shinumber'] = shidata[item['chufa02']]
+        except KeyError:
+            item['chufa_shinumber'] = None
+
+        try:
+            item['mudi_shengnumber'] = shengdata[item['chufa01']]
+        except KeyError:
+            item['mudi_shengnumber'] = None
+
+        try:
+            item['mudi_shinumber'] = shidata[item['chufa02']]
+        except KeyError:
+            item['mudi_shinumber'] = None
 
         zhuangche_splite = re.split(r'-|——', zhuangche)
         item['zhuangche01'] = ''.join(zhuangche_splite[:3])

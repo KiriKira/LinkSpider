@@ -99,12 +99,14 @@ class CSVPipeline(object):
         self.file1 = open('index.csv', 'wb')
         self.file2 = open('detail.csv', 'wb')
         # 初始化 exporter 实例，执行输出的文件和编码
-        self.exporter1 = CsvItemExporter(self.file1, encoding='utf8')
-        self.exporter2 = CsvItemExporter(self.file2, encoding='utf8',
+        self.exporter1 = CsvItemExporter(self.file1, encoding='gbk')
+        self.exporter2 = CsvItemExporter(self.file2, encoding='gbk',
                                          fields_to_export=['tag', 'pinlei', 'mingchen', 'leixing',
                                                            'yaoqiu01', 'yaoqiu02', 'guige', 'chechang',
-                                                           'chexing', 'yunfei', 'chufa01', 'chufa02',
-                                                           'chufa03', 'mudi01', 'mudi02', 'mudi03',
+                                                           'chexing', 'yunfei', 'chufa01', 'chufa_shengnumber',
+                                                           'chufa02', 'chufa_shinumber',
+                                                           'chufa03', 'mudi01', 'mudi_shengnumber',
+                                                           'mudi02', 'mudi_shinumber', 'mudi03',
                                                            'zhuangche01', 'zhuangche02', 'daohuo01', 'daohuo02'
                                                            ])
         # 开启倒数

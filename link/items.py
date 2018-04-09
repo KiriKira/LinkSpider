@@ -33,3 +33,7 @@ class DetailItem(scrapy.Item):
     zhuangche02 = scrapy.Field()
     daohuo01 = scrapy.Field()
     daohuo02 = scrapy.Field()
+    chufa_shengnumber = scrapy.Field()
+    chufa_shinumber = scrapy.Field()
+    mudi_shengnumber = scrapy.Field()
+    mudi_shinumber = scrapy.Field()
